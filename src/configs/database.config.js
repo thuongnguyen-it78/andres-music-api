@@ -1,4 +1,4 @@
-import { DATABASE_URL } from '../constants/auth.constant'
+import { DATABASE_URL } from '@/constants/auth.constant'
 const mongoose = require('mongoose')
 
 async function connect() {

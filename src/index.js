@@ -1,21 +1,19 @@
-process.env.NODE_ENV === 'production' || require('dotenv').config()
+// configure
+require('dotenv').config()
 
 import express from 'express'
-import morgan from 'morgan'
 import helmet from 'helmet'
 import cors from 'cors'
+import createError from 'http-errors'
 
-import route from './route'
+import routes from './routes'
 import connectDatabase from './configs/database.config.js'
-import { accessLogStream } from './utils/helper'
 import { failedResponse } from './constants/response.constant.js'
-import { NOT_FOUND } from './constants/http-code.constant.js'
 import { PORT } from './constants/auth.constant.js'
 
-const app = express()
-
-// configure
 const isProduction = process.env.NODE_ENV === 'production'
+
+const app = express()
 
 // enabling CORS for all requests
 app.use(cors())
@@ -27,31 +25,26 @@ app.use(express.json())
 app.use(helmet())
 app.use(express.urlencoded({ extended: true }))
 
-
-// logger
-if (!isProduction) app.use(morgan('combined', { stream: accessLogStream }))
-else app.use(morgan('dev'))
-
 // connect to mongodb
 connectDatabase()
+
 
 // verify user
 // app.use(AuthMiddleware.verifyUser)
 
 // route
-route(app)
+routes(app)
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-  const err = new Error('Not Found')
-  err.status = NOT_FOUND
-  next(err)
+  next(createError.NotFound())
 })
 
 // handle error
 app.use((err, req, res, next) => {
   res.status(err.status || 500).json({
     ...failedResponse,
+    code: err.status,
     message: err.message,
   })
 })

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-import { userInactive, userMale, userRole } from '../constants/user.constant'
+import { userInactive, userMale, userRole } from '@/constants/user.constant'
 
 const userSchema = new mongoose.Schema(
   {
