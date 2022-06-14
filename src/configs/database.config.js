@@ -1,4 +1,4 @@
-import { DATABASE_URL } from '@/constants/auth.constant'
+import { DATABASE_URL } from '@/constants/env.constant'
 const mongoose = require('mongoose')
 
 async function connect() {
@@ -6,9 +6,17 @@ async function connect() {
     await mongoose.connect(DATABASE_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      useCreateIndex: true,
     })
     console.log('Connect successfully!!!')
+    
+    // all executed methods log output to console
+    mongoose.set('debug', true)
+
+    // disable colors in debug mode
+    mongoose.set('debug', { color: false })
+
+    // get mongodb-shell friendly output (ISODate)
+    mongoose.set('debug', { shell: true })
   } catch (error) {
     console.log('Connect failure!!! \n ' + error)
     process.exit()
@@ -16,4 +24,3 @@ async function connect() {
 }
 
 export default connect
- 

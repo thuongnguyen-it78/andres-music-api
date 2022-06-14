@@ -1,5 +1,13 @@
 const mongoose = require('mongoose')
-import { userInactive, userMale, userRole } from '@/constants/user.constant'
+import {
+  userInactive,
+  userActive,
+  userMale,
+  userFemale,
+  userRole,
+  adminRole,
+} from '@/constants/user.constant'
+import { checkIsEmail } from './user.validation'
 
 const userSchema = new mongoose.Schema(
   {
@@ -9,34 +17,52 @@ const userSchema = new mongoose.Schema(
     },
     email: {
       type: String,
+      validate: {
+        validator: function (email) {
+          return checkIsEmail(email)
+        },
+        message: (props) => `${props.value} is not a valid email`,
+      },
+      required: true,
+    },
+    phone: {
+      type: String,
       required: true,
     },
     password: {
       type: String,
+      required: true,
       select: false,
     },
     avatarURL: {
       type: String,
-      default: null
+      default: null,
     },
     dateOfBirth: {
       type: Date,
-      default: null
+      default: null,
     },
     gender: {
       type: Number,
-      default: userMale
+      default: userMale,
+      enum: [userMale, userFemale],
+    },
+    tokenList: {
+      type: Array,
+      default: [],
     },
     role: {
       type: Number,
       default: userRole,
+      enum: [userRole, adminRole],
     },
     status: {
       type: Number,
       default: userInactive,
+      enum: [userInactive, userActive],
     },
     delete: {
-      type: Number,
+      type: Date,
       default: null,
     },
   },

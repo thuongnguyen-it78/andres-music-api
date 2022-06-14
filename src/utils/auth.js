@@ -13,13 +13,13 @@ export const verifyPassword = async (hash, password) => {
 
 export const generateAccessToken = (id) => {
   return jwt.sign({ id }, ACCESS_TOKEN_SECRET, {
-    expiresIn: '2000000s',
+    expiresIn: 60 * 60 * 24,
   })
 }
 
 export const verifyAccessToken = async (token) => {
   if (!token) {
-    return
+    return null
   }
 
   const { user } = await jwt.verify(token, ACCESS_TOKEN_SECRET)

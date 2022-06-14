@@ -5,13 +5,12 @@ import express from 'express'
 import helmet from 'helmet'
 import cors from 'cors'
 import createError from 'http-errors'
+import compression from 'compression'
 
 import routes from './routes'
 import connectDatabase from './configs/database.config.js'
 import { failedResponse } from './constants/response.constant.js'
-import { PORT } from './constants/auth.constant.js'
-
-const isProduction = process.env.NODE_ENV === 'production'
+import { PORT } from './constants/env.constant.js'
 
 const app = express()
 
@@ -28,6 +27,7 @@ app.use(express.urlencoded({ extended: true }))
 // connect to mongodb
 connectDatabase()
 
+app.use(compression())
 
 // verify user
 // app.use(AuthMiddleware.verifyUser)

@@ -6,12 +6,13 @@ class UserService {
     limit = Number.parseInt(limit)
     const query = q ? { name: new RegExp(q, 'i') } : {}
     try {
-      const data = await User.find(query)
-        .skip(page * limit)
-        .limit(limit)
-        .lean()
+      const [data, count] = await Promise.all([
+        User.find(query)
+          .skip(page * limit)
+          .limit(limit),
+        User.find(query).count(),
+      ])
 
-      const count = await User.find(query).count()
       return { data, pagination: { page, limit, count } }
     } catch (error) {
       throw error
@@ -29,7 +30,7 @@ class UserService {
 
   async create(data) {
     try {
-      const result = await new User(data).save()
+      const result = await User.create(data)
       delete result._doc.password
       return result
     } catch (error) {
