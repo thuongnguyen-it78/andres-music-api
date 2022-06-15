@@ -1,40 +1,9 @@
-import { v2 as cloudinary } from 'cloudinary'
-import { CloudinaryStorage } from 'multer-storage-cloudinary'
-import multer from 'multer'
-import {
-  CLOUDINARY_NAME,
-  CLOUDINARY_PUBLIC_KEY,
-  CLOUDINARY_SECRET_KEY,
-} from '../constants/cloudinary.constant'
+import cloud from 'cloudinary';
+import { CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, CLOUDINARY_NAME } from '../constants/env.constant';
+export const cloudinary = cloud.v2;
 
 cloudinary.config({
   cloud_name: CLOUDINARY_NAME,
-  api_key: CLOUDINARY_PUBLIC_KEY,
-  api_secret: CLOUDINARY_SECRET_KEY,
-})
-
-const storage = new CloudinaryStorage({
-  cloudinary,
-  allowedFormats: ['jpg', 'png', 'mp3', 'jpeg'],
-  filename: function (req, file, cb) {
-    cb(null, file.originalname)
-  },
-  params: async (req, file) => {
-    let folderName = 'images'
-    let resourceType = 'image'
-
-    if (file.mimetype.startsWith('audio')) {
-      folderName = 'songs'
-      resourceType = 'video'
-    }
-    
-    return {
-      folder: folderName,
-      resource_type: resourceType,
-    }
-  },
-})
-
-const uploadCloud = multer({ storage })
-
-export default uploadCloud
+  api_key: CLOUDINARY_API_KEY,
+  api_secret: CLOUDINARY_API_SECRET,
+});

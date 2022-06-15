@@ -7,6 +7,16 @@ import {
   userRole,
   adminRole,
 } from '@/constants/user.constant'
+import slug from 'mongoose-slug-generator';
+
+const options = {
+  separator: '-',
+  lang: 'en',
+  truncate: 120,
+};
+
+mongoose.plugin(slug, options);
+
 import { checkIsEmail } from './user.validation'
 
 const userSchema = new mongoose.Schema(
@@ -14,6 +24,14 @@ const userSchema = new mongoose.Schema(
     fullName: {
       type: String,
       required: true,
+    },
+    username: {
+      type: String,
+      trim: true,
+      slug: 'fullName',
+      slug_padding_size: 2,
+      required: true,
+      unique: true,
     },
     email: {
       type: String,
@@ -24,10 +42,12 @@ const userSchema = new mongoose.Schema(
         message: (props) => `${props.value} is not a valid email`,
       },
       required: true,
+      unique: true,
     },
     phone: {
       type: String,
       required: true,
+      unique: true,
     },
     password: {
       type: String,
@@ -47,8 +67,16 @@ const userSchema = new mongoose.Schema(
       default: userMale,
       enum: [userMale, userFemale],
     },
+    address: {
+      type: String,
+      default: null,
+    },
+    description: {
+      type: String,
+      default: null,
+    },
     tokenList: {
-      type: Array,
+      type: Array,  
       default: [],
     },
     role: {

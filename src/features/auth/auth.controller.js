@@ -39,6 +39,15 @@ class AuthController {
     }
   }
 
+  async loginWithFacebook(req, res, next) {
+    try {
+      const data = await AuthService.loginWithFacebook(req.body)
+      return res.status(OK).json(getSingleResponse(data))
+    } catch (error) {
+      next(error)
+    }
+  }
+
   async changePassword(req, res, next) {
     try {
       const data = await AuthService.changePassword(req.body)

@@ -26,7 +26,23 @@ class AuthService {
     }
   }
 
-  async loginWithGoogle(body) {
+  async loginWithFacebook(body) {
+    try {
+      const client = new OAuth2Client(GOOGLE_CLIENT_ID)
+
+      const ticket = await client.verifyIdToken({
+        idToken: body.token,
+        audience: process.env.CLIENT_ID,
+      })
+      const { name, email, picture } = ticket.getPayload()
+      console.log(ticket.getPayload())
+      return {}
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async loginWithFacebook(body) {
     try {
       const client = new OAuth2Client(GOOGLE_CLIENT_ID)
 
