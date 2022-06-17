@@ -30,8 +30,6 @@ const userSchema = new mongoose.Schema(
       trim: true,
       slug: 'fullName',
       slug_padding_size: 2,
-      required: true,
-      unique: true,
     },
     email: {
       type: String,
@@ -44,17 +42,14 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    phone: {
+    phoneNumber: {
       type: String,
-      unique: true,
     },
     googleId: {
       type: String,
-      unique: true,
     },
     facebookId: {
       type: String,
-      unique: true,
     },
     password: {
       type: String,

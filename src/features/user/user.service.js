@@ -34,7 +34,9 @@ class UserService {
       delete result._doc.password
       return result
     } catch (error) {
+      console.log(error);
       throw error
+      
     }
   }
 
