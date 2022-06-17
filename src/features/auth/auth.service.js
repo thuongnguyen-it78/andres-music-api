@@ -1,8 +1,11 @@
 import User from '@/features/user/user.model'
-import { OAuth2Client } from 'google-auth-library'
+import { signInWithCredential, GoogleAuthProvider, FacebookAuthProvider } from 'firebase/auth'
+import { auth } from '@/configs/firebase.config.js'
+import { generateAccessToken } from '@/utils/auth'
+import UserService from '@/features/user/user.service'
 
 class AuthService {
-  async register() {
+  async register(body) {
     try {
       return {}
     } catch (error) {
@@ -18,7 +21,7 @@ class AuthService {
     }
   }
 
-  async login() {
+  async login({ username, email, password }) {
     try {
       return {}
     } catch (error) {
@@ -26,39 +29,70 @@ class AuthService {
     }
   }
 
-  async loginWithFacebook(body) {
+  async loginWithGoogle({ googleToken }) {
     try {
-      const client = new OAuth2Client(GOOGLE_CLIENT_ID)
+      const credential = GoogleAuthProvider.credential(googleToken)
+      const value = await signInWithCredential(auth, credential)
+      const uid = value.user.uid
 
-      const ticket = await client.verifyIdToken({
-        idToken: body.token,
-        audience: process.env.CLIENT_ID,
-      })
-      const { name, email, picture } = ticket.getPayload()
-      console.log(ticket.getPayload())
-      return {}
+      const { fullName, email, photoUrl, dateOfBirth } = value.user.reloadUserInfo[0]
+
+      // check user exists by socialId
+      let user = await UserService.getBySocialId({ googleId: uuid })
+
+      // doest not exists -> create user -> generate access_token
+      if (!user) {
+        user = await UserService.create({
+          fullName,
+          email,
+          dateOfBirth,
+          avatarURL: photoUrl,
+          googleId: uid,
+        })
+      }
+
+      // exists -> generate access_token
+      const accessToken = generateAccessToken(user)
+
+      return {
+        user,
+        token: accessToken,
+      }
     } catch (error) {
       throw error
     }
   }
 
-  async loginWithFacebook(body) {
+  async loginWithFacebook({ facebookToken }) {
     try {
-      const client = new OAuth2Client(GOOGLE_CLIENT_ID)
+      const credential = FacebookAuthProvider.credential(facebookToken)
+      const value = await signInWithCredential(auth, credential)
+      const uid = value.user.uid
 
-      const ticket = await client.verifyIdToken({
-        idToken: body.token,
-        audience: process.env.CLIENT_ID,
-      })
-      const { name, email, picture } = ticket.getPayload()
-      console.log(ticket.getPayload())
-      return {}
+      const { fullName, email, photoUrl, dateOfBirth } = value._tokenResponse
+      let user = await UserService.getBySocialId({ facebookId: uuid })
+      if (!user) {
+        user = await UserService.create({
+          fullName,
+          email,
+          dateOfBirth,
+          avatarURL: photoUrl,
+          facebook: uid,
+        })
+      }
+
+      const accessToken = generateAccessToken(user)
+
+      return {
+        user,
+        token: accessToken,
+      }
     } catch (error) {
       throw error
     }
   }
 
-  async changePassword() {
+  async changePassword({ password, newPassword }) {
     try {
       return {}
     } catch (error) {
@@ -74,7 +108,7 @@ class AuthService {
     }
   }
 
-  async forgottenPassword() {
+  async forgottenPassword({ email }) {
     try {
       return {}
     } catch (error) {

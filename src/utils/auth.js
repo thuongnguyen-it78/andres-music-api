@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
-import { ACCESS_TOKEN_SECRET } from '../constants/auth.constant'
+import { ACCESS_TOKEN_SECRET } from '../constants/env.constant'
 
 export const encodePassword = async (password) => {
   const saltRounds = 10
@@ -11,8 +11,8 @@ export const verifyPassword = async (hash, password) => {
   return await bcrypt.compare(password, hash)
 }
 
-export const generateAccessToken = (id) => {
-  return jwt.sign({ id }, ACCESS_TOKEN_SECRET, {
+export const generateAccessToken = (user) => {
+  return jwt.sign(user, ACCESS_TOKEN_SECRET, {
     expiresIn: 60 * 60 * 24,
   })
 }

@@ -1,6 +1,7 @@
 import { cloudinary } from '@/configs/cloudinary.config'
 import fs from 'fs'
 import { getPluralResponse, getSingleResponse } from '../../constants/response.constant'
+import { OK} from '@/constants/http-code.constant'
 
 class Upload {
   async single(req, res, next) {
