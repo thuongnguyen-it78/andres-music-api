@@ -16,6 +16,13 @@ const otpSchema = new mongoose.Schema(
       required: true,
       enum: [loginType, forgottenPasswordType],
     },
+    time: {
+      type: Date,
+      default: Date.now,
+      index: {
+        expires: 30,
+      },
+    },
   },
   {
     timestamps: true,
