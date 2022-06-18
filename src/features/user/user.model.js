@@ -7,15 +7,15 @@ import {
   userRole,
   adminRole,
 } from '@/constants/user.constant'
-import slug from 'mongoose-slug-generator';
+import slug from 'mongoose-slug-generator'
 
 const options = {
   separator: '-',
   lang: 'en',
   truncate: 120,
-};
+}
 
-mongoose.plugin(slug, options);
+mongoose.plugin(slug, options)
 
 import { checkIsEmail } from './user.validation'
 
@@ -30,6 +30,7 @@ const userSchema = new mongoose.Schema(
       trim: true,
       slug: 'fullName',
       slug_padding_size: 2,
+      unique: true,
     },
     email: {
       type: String,
@@ -53,7 +54,9 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
+      required: function () {
+        return !(this.googleId || this.facebookId)
+      },
       select: false,
     },
     avatarURL: {
@@ -78,8 +81,9 @@ const userSchema = new mongoose.Schema(
       default: null,
     },
     tokenList: {
-      type: Array,  
+      type: Array,
       default: [],
+      select: false,
     },
     role: {
       type: Number,
@@ -98,6 +102,7 @@ const userSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    versionKey: false,
   }
 )
 

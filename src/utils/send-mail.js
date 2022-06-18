@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer'
 import { mailTemplate } from './mailTemplate.js'
-import { USER_MAIL, PASS_MAIL } from '@/constants/env.constant'
+import { MAIL_USER, MAIL_PASS } from '@/constants/env.constant'
 
 export const sendMail = (mail, username, code) => {
   //configure mail sending protocol
@@ -9,8 +9,8 @@ export const sendMail = (mail, username, code) => {
     port: 587,
     secure: false,
     auth: {
-      user: process.env.USER_MAIL,
-      pass: process.env.PASS_MAIL,
+      user: MAIL_USER,
+      pass: MAIL_PASS,
     },
   })
   //return promise

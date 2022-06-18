@@ -43,6 +43,7 @@ const songSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    versionKey: false,
   }
 )
 

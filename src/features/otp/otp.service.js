@@ -1,16 +1,16 @@
-import User from './user.model'
+import OTP from './otp.model'
 
-class UserService {
+class OTPService {
   async getAll({ page = 1, limit = 20, q = '' }) {
     page = Number.parseInt(page) - 1
     limit = Number.parseInt(limit)
     const query = q ? { name: new RegExp(q, 'i') } : {}
     try {
       const [data, count] = await Promise.all([
-        User.find(query)
+        OTP.find(query)
           .skip(page * limit)
           .limit(limit),
-        User.find(query).count(),
+        OTP.find(query).count(),
       ])
 
       return { data, pagination: { page, limit, count } }
@@ -21,19 +21,7 @@ class UserService {
 
   async getById(id) {
     try {
-      const result = await User.findById(id)
-      return result
-    } catch (error) {
-      throw error
-    }
-  }
-
-  async getBySocialId({ googleId, facebookId }) {
-    try {
-      const result = await User.findOne({
-        ...(Boolean(googleId) && { googleId }),
-        ...(Boolean(facebookId) && { facebookId }),
-      })
+      const result = await OTP.findById(id)
       return result
     } catch (error) {
       throw error
@@ -42,18 +30,16 @@ class UserService {
 
   async create(data) {
     try {
-      const result = await User.create(data)
-      delete result._doc.password
+      const result = await OTP.create(data)
       return result
     } catch (error) {
-      console.log(error)
       throw error
     }
   }
 
   async update(id, data) {
     try {
-      const result = await User.findByIdAndUpdate(id, data, {
+      const result = await OTP.findByIdAndUpdate(id, data, {
         new: true,
       })
       return result
@@ -64,7 +50,7 @@ class UserService {
 
   async delete(id) {
     try {
-      const result = await User.findByIdAndDelete(id)
+      const result = await OTP.findByIdAndDelete(id)
       return result
     } catch (error) {
       throw error
@@ -72,4 +58,4 @@ class UserService {
   }
 }
 
-export default new UserService()
+export default new OTPService()
