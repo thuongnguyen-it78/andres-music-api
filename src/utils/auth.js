@@ -1,13 +1,23 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { ACCESS_TOKEN_SECRET } from '../constants/env.constant'
+import otpGenerator from 'otp-generator'
 
-export const encodePassword = async (password) => {
+export const generateOTP = () => {
+  return otpGenerator.generate(6, {
+    digits: true,
+    lowerCaseAlphabets: false,
+    upperCaseAlphabets: false,
+    specialChars: false,
+  })
+}
+
+export const encodeString = async (password) => {
   const saltRounds = 10
   return await bcrypt.hash(password, saltRounds)
 }
 
-export const verifyPassword = async (password, hash) => {
+export const verifyString = async (password, hash) => {
   return await bcrypt.compare(password, hash)
 }
 

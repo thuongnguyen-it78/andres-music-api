@@ -1,3 +1,3 @@
-export const loginType = 1
+export const activeAccountType = 1
 export const forgottenPasswordType = 2
-export const otpTypeLost = [loginType, forgottenPasswordType]
+export const otpTypeLost = [activeAccountType, forgottenPasswordType]

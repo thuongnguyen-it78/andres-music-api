@@ -1,57 +1,57 @@
+import createError from 'http-errors'
+import { encodeString, verifyString } from '../../utils/auth'
 import OTP from './otp.model'
+import User from '../user/user.model'
+import OTP from './otp.model'
+import { forgottenPasswordType } from '../../constants/otp.constant'
 
 class OTPService {
-  async getAll({ page = 1, limit = 20, q = '' }) {
-    page = Number.parseInt(page) - 1
-    limit = Number.parseInt(limit)
-    const query = q ? { name: new RegExp(q, 'i') } : {}
+  async generate({ email, type = forgottenPasswordType }) {
     try {
-      const [data, count] = await Promise.all([
-        OTP.find(query)
-          .skip(page * limit)
-          .limit(limit),
-        OTP.find(query).count(),
-      ])
+      const user = User.findOne({ email })
+      if (!user) {
+        throw createError.BadRequest('Email is invalid')
+      }
+      const otp = generateOTP()
+      const encodeOTP = await encodeString(otp)
 
-      return { data, pagination: { page, limit, count } }
-    } catch (error) {
-      throw error
-    }
-  }
-
-  async getById(id) {
-    try {
-      const result = await OTP.findById(id)
-      return result
-    } catch (error) {
-      throw error
-    }
-  }
-
-  async create(data) {
-    try {
-      const result = await OTP.create(data)
-      return result
-    } catch (error) {
-      throw error
-    }
-  }
-
-  async update(id, data) {
-    try {
-      const result = await OTP.findByIdAndUpdate(id, data, {
-        new: true,
+      await OTP.save({
+        email,
+        type,
+        otp: encodeOTP,
       })
-      return result
+
+      return {
+        otp: otp,
+        type: type,
+        email,
+      }
     } catch (error) {
       throw error
     }
   }
 
-  async delete(id) {
+  async check({ email, type = forgottenPasswordType, otp }) {
     try {
-      const result = await OTP.findByIdAndDelete(id)
-      return result
+      const currentOTP = await OTP.findOne({
+        email,
+        type,
+      })
+
+      if (!currentOTP) {
+        throw createError.BadRequest('Payload is not valid')
+      }
+
+      if (!await verifyString(otp, currentOTP.otp)) {
+        throw createError.BadRequest('OTP is not valid')
+      }
+
+      await OTP.deleteMany({
+        email,
+        type
+      })
+
+      return true
     } catch (error) {
       throw error
     }

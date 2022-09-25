@@ -1,7 +1,7 @@
 import User from '../../features/user/user.model'
 import { signInWithCredential, GoogleAuthProvider, FacebookAuthProvider } from 'firebase/auth'
 import { auth } from '../../configs/firebase.config.js'
-import { generateAccessToken, verifyPassword, encodePassword } from '../../utils/auth'
+import { generateAccessToken, verifyString, encodeString } from '../../utils/auth'
 import UserService from '../../features/user/user.service'
 import createError from 'http-errors'
 import { sendMail } from '../../utils/send-mail'
@@ -44,7 +44,7 @@ class AuthService {
         throw createError.BadRequest('User does not exists')
       }
 
-      if (!(await verifyPassword(password, user.password))) {
+      if (!(await verifyString(password, user.password))) {
         throw createError.BadRequest('Password is invalid')
       }
 
@@ -125,11 +125,11 @@ class AuthService {
 
   async changePassword(requestUser, { oldPassword, newPassword }) {
     try {
-      if (!await verifyPassword(oldPassword, requestUser.password)) {
+      if (!await verifyString(oldPassword, requestUser.password)) {
         throw createError.BadRequest('Password is invalid')
       }
 
-      requestUser.password = await encodePassword(newPassword)
+      requestUser.password = await encodeString(newPassword)
       await requestUser.save()
 
       return true
