@@ -70,6 +70,15 @@ class UserService {
       throw error
     }
   }
+
+  async checkEmailExists(email) {
+    try {
+      const user = await User.findOne({ email })
+      return Boolean(user)
+    } catch (error) {
+      throw error
+    }
+  }
 }
 
 export default new UserService()
