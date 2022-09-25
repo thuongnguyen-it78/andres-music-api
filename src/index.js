@@ -32,7 +32,7 @@ connectDatabase()
 app.use(compression())
 
 // verify user
-app.use(AuthMiddleware.verifyUser)
+// app.use(AuthMiddleware.verifyUser)
 
 // route
 routes(app)
