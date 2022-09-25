@@ -11,7 +11,7 @@ import systemRoute from './features/system/system.route'
 
 function route(app) {
   router.use('/auth', authRoute)
-  router.use('/upload', uploadRoute)
+  router.use('/uploads', uploadRoute)
   router.use('/users', userRoute)
   router.use('/posts', postRoute)
   router.use('/songs', songRoute)
