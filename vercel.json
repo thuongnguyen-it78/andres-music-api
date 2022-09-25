@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "build",
+      "src": "/build/api.bundle.js",
       "use": "@now/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/build/api.bundle.js"
+      "dest": "index.js"
     }
   ]
 }
