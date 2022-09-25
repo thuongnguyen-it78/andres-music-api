@@ -6,7 +6,7 @@ import {
   userFemale,
   userRole,
   adminRole,
-} from '@/constants/user.constant'
+} from '../../constants/user.constant'
 import slug from 'mongoose-slug-generator'
 
 const options = {
@@ -95,7 +95,7 @@ const userSchema = new mongoose.Schema(
       default: userInactive,
       enum: [userInactive, userActive],
     },
-    delete: {
+    deletedAt: {
       type: Date,
       default: null,
     },

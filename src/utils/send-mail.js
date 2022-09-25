@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer'
-import { mailTemplate } from './mailTemplate.js'
-import { MAIL_USER, MAIL_PASS } from '@/constants/env.constant'
+import { mailTemplate } from './mail-template.js'
+import { MAIL_USER, MAIL_PASS } from '../constants/env.constant'
 
 export const sendMail = (mail, username, code) => {
   //configure mail sending protocol

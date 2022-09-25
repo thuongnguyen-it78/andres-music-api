@@ -5,8 +5,8 @@ export const failedResponse = {
   message: 'Internal Server Error',
 }
 
-export const getSingleResponse = (data) => ({ ...data.singleResponse, data })
-export const getPluralResponse = (data) => ({ ...data.pluralResponse, data })
-export const getFailedResponse = (data) => ({ ...data.failedResponse, data })
+export const getSingleResponse = (data) => ({ ...singleResponse, data })
+export const getPluralResponse = (data) => ({ ...pluralResponse, data })
+export const getFailedResponse = (data) => ({ ...failedResponse, data })
 
 

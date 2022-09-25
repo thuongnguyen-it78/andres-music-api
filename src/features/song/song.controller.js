@@ -1,5 +1,5 @@
-import { OK } from '@/constants/http-code.constant'
-import { getSingleResponse, getPluralResponse } from '@/constants/response.constant'
+import { OK } from '../../constants/http-code.constant'
+import { getSingleResponse, getPluralResponse } from '../../constants/response.constant'
 import SongService from './song.service'
 
 class SongController {
@@ -44,7 +44,7 @@ class SongController {
   async delete(req, res, next) {
     const id = req.params.id
     try {
-      const data = await SongService.findByIdAndDelete(id)
+      const data = await SongService.delete(id)
       res.status(OK).json(getSingleResponse(data))
     } catch (error) {
       next(error)

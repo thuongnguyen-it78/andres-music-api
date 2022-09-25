@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-import { loginType, forgottenPasswordType } from '@/constants/otp.constant'
+import { loginType, forgottenPasswordType } from '../../constants/otp.constant'
 
 const otpSchema = new mongoose.Schema(
   {

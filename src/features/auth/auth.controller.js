@@ -1,5 +1,5 @@
-import { OK } from '@/constants/http-code.constant'
-import { getSingleResponse } from '@/constants/response.constant'
+import { OK } from '../../constants/http-code.constant'
+import { getSingleResponse } from '../../constants/response.constant'
 import AuthService from './auth.service'
 
 class AuthController {
@@ -50,7 +50,7 @@ class AuthController {
 
   async changePassword(req, res, next) {
     try {
-      const data = await AuthService.changePassword(req.body)
+      const data = await AuthService.changePassword(req.requestUser, req.body)
       res.status(OK).json(getSingleResponse(data))
     } catch (error) {
       next(error)

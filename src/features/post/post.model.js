@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 import {
   postActive, postInactive
-} from '@/constants/post.constant'
+} from '../../constants/post.constant'
 import slug from 'mongoose-slug-generator'
 
 const options = {
@@ -14,7 +14,7 @@ mongoose.plugin(slug, options)
 
 const postSchema = new mongoose.Schema(
   {
-    userId: {
+    creatorId: {
       type: mongoose.Types.ObjectId,
       required: true,
       ref: 'user',
@@ -36,7 +36,7 @@ const postSchema = new mongoose.Schema(
     tagList: [{ type: mongoose.Types.ObjectId, ref: 'tag', default: [] }],
     likeList: [{ type: mongoose.Types.ObjectId, ref: 'user', default: [] }],
     saverList: [{ type: mongoose.Types.ObjectId, ref: 'user', default: [] }],
-    delete: {
+    deletedAt: {
       type: Date,
       default: null,
     },

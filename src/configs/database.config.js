@@ -1,4 +1,4 @@
-import { DATABASE_URL } from '@/constants/env.constant'
+import { DATABASE_URL } from '../constants/env.constant'
 const mongoose = require('mongoose')
 
 async function connect() {

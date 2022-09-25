@@ -1,16 +1,16 @@
-import Tag from './tag.model'
+import Post from './country.model'
 
-class TagService {
+class PostService {
   async getAll({ page = 1, limit = 20, q = '' }) {
     page = Number.parseInt(page) - 1
     limit = Number.parseInt(limit)
     const query = q ? { name: new RegExp(q, 'i') } : {}
     try {
       const [data, count] = await Promise.all([
-        Tag.find(query)
+        Post.find(query)
           .skip(page * limit)
           .limit(limit),
-        Tag.find(query).count(),
+        Post.find(query).count(),
       ])
 
       return { data, pagination: { page, limit, count } }
@@ -21,7 +21,7 @@ class TagService {
 
   async getById(id) {
     try {
-      const result = await Tag.findById(id)
+      const result = await Post.findById(id)
       return result
     } catch (error) {
       throw error
@@ -30,7 +30,7 @@ class TagService {
 
   async create(data) {
     try {
-      const result = await Tag.create(data)
+      const result = await Post.create(data)
       return result
     } catch (error) {
       throw error
@@ -39,7 +39,7 @@ class TagService {
 
   async update(id, data) {
     try {
-      const result = await Tag.findByIdAndUpdate(id, data, {
+      const result = await Post.findByIdAndUpdate(id, data, {
         new: true,
       })
       return result
@@ -50,7 +50,7 @@ class TagService {
 
   async delete(id) {
     try {
-      const result = await Tag.findByIdAndDelete(id)
+      const result = await Post.findByIdAndDelete(id)
       return result
     } catch (error) {
       throw error
@@ -58,4 +58,4 @@ class TagService {
   }
 }
 
-export default new TagService()
+export default new PostService()

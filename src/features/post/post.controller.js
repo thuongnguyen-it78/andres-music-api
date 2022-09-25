@@ -1,5 +1,5 @@
-import { OK } from '@/constants/http-code.constant'
-import { getSingleResponse, getPluralResponse } from '@/constants/response.constant'
+import { OK } from '../../constants/http-code.constant'
+import { getSingleResponse, getPluralResponse } from '../../constants/response.constant'
 import PostService from './post.service'
 
 class PostController {
@@ -44,7 +44,7 @@ class PostController {
   async delete(req, res, next) {
     const id = req.params.id
     try {
-      const data = await PostService.findByIdAndDelete(id)
+      const data = await PostService.delete(id)
       res.status(OK).json(getSingleResponse(data))
     } catch (error) {
       next(error)

@@ -1,7 +1,5 @@
 const mongoose = require('mongoose')
-import {
-  songActive, songInactive
-} from '@/constants/song.constant'
+import { songActive, songInactive } from '../../constants/song.constant'
 import slug from 'mongoose-slug-generator'
 
 const options = {
@@ -14,7 +12,7 @@ mongoose.plugin(slug, options)
 
 const songSchema = new mongoose.Schema(
   {
-    userId: {
+    creatorId: {
       type: mongoose.Types.ObjectId,
       required: true,
       ref: 'user',
@@ -23,7 +21,7 @@ const songSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    content: {
+    mediaURL: {
       type: String,
       required: true,
     },
@@ -33,10 +31,11 @@ const songSchema = new mongoose.Schema(
       default: songInactive,
       enum: [songInactive, songActive],
     },
-    tagList: [{ type: mongoose.Types.ObjectId, ref: 'tag', default: [] }],
+    singerList: [{ type: mongoose.Types.ObjectId, ref: 'user', default: [] }],
     likeList: [{ type: mongoose.Types.ObjectId, ref: 'user', default: [] }],
     saverList: [{ type: mongoose.Types.ObjectId, ref: 'user', default: [] }],
-    delete: {
+    tagList: [{ type: mongoose.Types.ObjectId, ref: 'tag', default: [] }],
+    deletedAt: {
       type: Date,
       default: null,
     },

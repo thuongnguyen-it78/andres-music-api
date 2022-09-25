@@ -1,5 +1,5 @@
-import { OK } from '@/constants/http-code.constant'
-import { getSingleResponse, getPluralResponse } from '@/constants/response.constant'
+import { OK } from '../../constants/http-code.constant'
+import { getSingleResponse, getPluralResponse } from '../../constants/response.constant'
 import UserService from './user.service'
 
 class UserController {
@@ -43,8 +43,8 @@ class UserController {
 
   async delete(req, res, next) {
     const id = req.params.id
-    try {
-      const data = await UserService.findByIdAndDelete(id)
+      try {
+      const data = await UserService.delete(id)
       res.status(OK).json(getSingleResponse(data))
     } catch (error) {
       next(error)

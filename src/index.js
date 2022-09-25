@@ -11,6 +11,7 @@ import routes from './routes'
 import connectDatabase from './configs/database.config.js'
 import { failedResponse } from './constants/response.constant.js'
 import { PORT } from './constants/env.constant.js'
+import AuthMiddleware from './middlewares/auth.middleware'
 
 const app = express()
 
@@ -18,11 +19,12 @@ const app = express()
 app.use(cors())
 
 // using bodyParser to parse JSON bodies into JS objects
-app.use(express.json())
-
+// app.use(express.json())
+// app.use(express.urlencoded({ extended: true }))
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb'}));
 // adding Helmet to enhance your API's security
 app.use(helmet())
-app.use(express.urlencoded({ extended: true }))
 
 // connect to mongodb
 connectDatabase()
@@ -30,7 +32,7 @@ connectDatabase()
 app.use(compression())
 
 // verify user
-// app.use(AuthMiddleware.verifyUser)
+app.use(AuthMiddleware.verifyUser)
 
 // route
 routes(app)

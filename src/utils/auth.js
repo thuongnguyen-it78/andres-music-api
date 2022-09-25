@@ -7,7 +7,7 @@ export const encodePassword = async (password) => {
   return await bcrypt.hash(password, saltRounds)
 }
 
-export const verifyPassword = async (hash, password) => {
+export const verifyPassword = async (password, hash) => {
   return await bcrypt.compare(password, hash)
 }
 
@@ -22,6 +22,6 @@ export const verifyAccessToken = async (token) => {
     return null
   }
 
-  const { user } = await jwt.verify(token, ACCESS_TOKEN_SECRET)
-  return user
+  const { userId } = await jwt.verify(token, ACCESS_TOKEN_SECRET)
+  return { userId }
 }

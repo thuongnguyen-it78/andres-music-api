@@ -1,15 +1,17 @@
-import User from '@/features/user/user.model'
+import User from '../../features/user/user.model'
 import { signInWithCredential, GoogleAuthProvider, FacebookAuthProvider } from 'firebase/auth'
-import { auth } from '@/configs/firebase.config.js'
-import { generateAccessToken } from '../../utils/auth'
-import UserService from '@/features/user/user.service'
+import { auth } from '../../configs/firebase.config.js'
+import { generateAccessToken, verifyPassword, encodePassword } from '../../utils/auth'
+import UserService from '../../features/user/user.service'
 import createError from 'http-errors'
 import { sendMail } from '../../utils/send-mail'
 
 class AuthService {
-  async register({ fullName, email, password }) {
+  async register(data) {
     try {
-      return {}
+      const result = await User.create(data)
+      delete result._doc.password
+      return result
     } catch (error) {
       throw error
     }
@@ -33,20 +35,20 @@ class AuthService {
 
   async login({ username, email, password }) {
     try {
-      const user = User.find({
+      const user = await User.findOne({
         ...(Boolean(username) && { username }),
         ...(Boolean(email) && { email }),
       }).select('+password')
 
-      if (user) {
-        createError.BadRequest('User does not exists')
+      if (!user) {
+        throw createError.BadRequest('User does not exists')
       }
 
-      if (!checkPassword(password, user.password)) {
-        createError.BadRequest('Password is invalid')
+      if (!(await verifyPassword(password, user.password))) {
+        throw createError.BadRequest('Password is invalid')
       }
 
-      const accessToken = generateAccessToken({ _id: user._id })
+      const accessToken = generateAccessToken({ userId: user._id })
       delete user._doc.password
       return {
         token: accessToken,
@@ -121,18 +123,14 @@ class AuthService {
     }
   }
 
-  async changePassword(requestUser, { password, newPassword }) {
+  async changePassword(requestUser, { oldPassword, newPassword }) {
     try {
-      const user = User.findById(requestUser._id).select('+password')
-      if (!user) {
-        createError.NotFound('User does not exists')
+      if (!await verifyPassword(oldPassword, requestUser.password)) {
+        throw createError.BadRequest('Password is invalid')
       }
 
-      if (!checkPassword(password, user.password)) {
-        createError('Password is invalid')
-      }
-
-      user.password = generatePassword(newPassword)
+      requestUser.password = await encodePassword(newPassword)
+      await requestUser.save()
 
       return true
     } catch (error) {
@@ -152,7 +150,7 @@ class AuthService {
     try {
       const user = User.findOne({ email: email })
       if (!user) {
-        createError.BadRequest('Email is invalid')
+        throw createError.BadRequest('Email is invalid')
       }
 
       const otpCode = generateOTP()
