@@ -1,8 +1,7 @@
 import nodemailer from 'nodemailer'
-import { mailTemplate } from './mail-template.js'
 import { MAIL_USER, MAIL_PASS } from '../constants/env.constant'
 
-export const sendMail = (mail, username, code) => {
+export const sendMail = (receiver, content, subject) => {
   //configure mail sending protocol
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
@@ -15,9 +14,9 @@ export const sendMail = (mail, username, code) => {
   })
   //return promise
   return transporter.sendMail({
-    from: '"ANDRES-MUSIC" <daylataikhoantest.dev@gmail.com>',
-    to: `${mail}`,
-    subject: '[ANDRES-MUSIC] Quên mật khẩu',
-    html: mailTemplate(code, username),
+    from: '"Andres Platform" <andresnguyen.it78@gmail.com>',
+    to: `${receiver}`,
+    subject: `[Andres Platform] ${subject ? subject : ''}`,
+    html: content,
   })
 }

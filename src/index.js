@@ -42,7 +42,7 @@ app.use((req, res, next) => {
   next(createError.NotFound())
 })
 
-// handle error
+// handle error 
 app.use((err, req, res, next) => {
   res.status(err.status || 500).json({
     ...failedResponse,

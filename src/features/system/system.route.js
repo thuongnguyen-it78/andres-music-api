@@ -17,4 +17,7 @@ router.post('/create-district', SystemController.createDistrict)
 router.delete('/clear-ward', SystemController.clearWard)
 router.post('/create-ward', SystemController.createWard)
 
+router.post('/send-mail', SystemController.sendMail)
+
+
 export default router

@@ -6,6 +6,8 @@ import District from '../location/district.model'
 import Ward from '../location/ward.model'
 
 import User from '../user/user.model'
+import { sendMail } from '../../utils/send-mail'
+import { sendCodeTemplate } from '../../utils/mail-template'
 
 class SystemController {
   async clearUser(req, res, next) {
@@ -95,6 +97,16 @@ class SystemController {
       return res.status(OK).json(getPluralResponse(data))
     } catch (error) {
       next(error)
+    }
+  }
+
+  async sendMail(req, res, next) {
+    try {
+      const { receiver, content } = req.body
+      const data = await sendMail(receiver, sendCodeTemplate(content))
+      return res.status(OK).json(getPluralResponse(data))
+    } catch (error) {
+      next(error)   
     }
   }
 }

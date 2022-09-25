@@ -1,4 +1,4 @@
-export function mailTemplate(code, username) {
+export function sendCodeTemplate(code, username) {
   return `
     <div
   style="

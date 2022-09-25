@@ -4,6 +4,7 @@ const router = express.Router()
 import uploadController from './upload.controller'
 
 router.post('/single', upload.single('image'), uploadController.single);
-router.post('/multiple', upload.any(), uploadController.multiple);
+router.post('/multiple', upload.array('images', 5), uploadController.multiple); // upload.any()
+
 
 export default router
