@@ -1,5 +1,5 @@
 require('dotenv').config()
-export const DATABASE_URL = process.env.DATABASE_URL
+export const DATABASE_URL = process.env.DATABASE_URL || "mongodb+srv://andres-music:fxd502Femt3uRPwh@andres-music.biwf0qa.mongodb.net/?retryWrites=true&w=majority"
 export const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET
 export const PORT = process.env.PORT || 3005
 export const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
