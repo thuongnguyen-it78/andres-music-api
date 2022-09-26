@@ -30,8 +30,7 @@ class AuthMiddleware {
     } catch (error) {
       const result = publicRouteList.some(
         (publicRoute) =>
-          req.originalUrl.indexOf(publicRoute.path) !== -1 &&
-          (req.method === 'GET' || req.method === publicRoute.method)
+          req.originalUrl.indexOf(publicRoute.path) !== -1 && req.method === publicRoute.method
       )
 
       result ? next() : next(error)
