@@ -1,4 +1,4 @@
-export function sendCodeTemplate(code, username) {
+export function sendCodeTemplate(code, user) {
   return `
     <div
   style="
@@ -185,7 +185,7 @@ export function sendCodeTemplate(code, username) {
                                   'Apple Color Emoji', 'Segoe UI Emoji' !important;
                               "
                             >
-                              Here's your GitHub launch code, @${username}
+                              Here's your GitHub launch code, @${user.username}
                             </h2>
                           </td>
                         </tr>

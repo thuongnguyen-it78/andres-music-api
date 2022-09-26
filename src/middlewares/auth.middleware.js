@@ -1,5 +1,5 @@
 import createError from 'http-errors'
-import { adminRole, userInactive } from '../constants/user.constant'
+import { adminRole, userBlock } from '../constants/user.constant'
 import { publicRouteList } from '../constants/auth.constant'
 import User from '../features/user/user.model'
 import { verifyAccessToken } from '../utils/auth'
@@ -21,8 +21,8 @@ class AuthMiddleware {
         throw createError.BadRequest("User doesn't exists")
       }
 
-      if (requestUser.status === userInactive) {
-        throw createError.NotAcceptable("User isn't active")
+      if (requestUser.status === userBlock) {
+        throw createError.NotAcceptable("User is block")
       }
 
       req.requestUser = requestUser

@@ -9,12 +9,11 @@ const otpSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      required: true,
+      enum: [activeAccountType, forgottenPasswordType],
     },
     otp: {
       type: String,
       required: true,
-      enum: [activeAccountType, forgottenPasswordType],
     },
     time: {
       type: Date,

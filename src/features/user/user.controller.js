@@ -43,8 +43,26 @@ class UserController {
 
   async delete(req, res, next) {
     const id = req.params.id
-      try {
+    try {
       const data = await UserService.delete(id)
+      res.status(OK).json(getSingleResponse(data))
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async setActive(req, res, next) {
+    try {
+      const data = await UserService.setActive(req.body)
+      res.status(OK).json(getSingleResponse(data))
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async sendOTP(req, res, next) {
+    try {
+      const data = await UserService.sendOTP(req.body)
       res.status(OK).json(getSingleResponse(data))
     } catch (error) {
       next(error)

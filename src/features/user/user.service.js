@@ -1,6 +1,8 @@
 import User from './user.model'
 import OTPService from '../otp/otp.service'
 import { userActive } from '../../constants/user.constant'
+import { sendMail } from '../../utils/send-mail'
+import { sendCodeTemplate } from '../../utils/mail-template'
 
 class UserService {
   async getAll({ page = 1, limit = 20, q = '' }) {
@@ -86,9 +88,21 @@ class UserService {
     try {
       if (!(await OTPService.check({ email, type, otp }))) return false
 
-      const user = User.find({ email })
+      const user = await User.findOne({ email })
       user.status = userActive
       await user.save()
+      return true
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async sendOTP({ email, type }) {
+    try {
+      const { otp, user } = await OTPService.generate({ email, type })
+
+      await sendMail(email, sendCodeTemplate(otp, user), 'Kích hoạt tài khoản')
+
       return true
     } catch (error) {
       throw error

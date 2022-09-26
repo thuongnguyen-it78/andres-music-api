@@ -15,4 +15,12 @@ export const publicRouteList = [
     path: 'users',
     method: "GET"
   },
+  {
+    path: 'users/send-otp',
+    method: "POST"
+  },
+  {
+    path: 'users/set-active',
+    method: "POST"
+  },
 ]
