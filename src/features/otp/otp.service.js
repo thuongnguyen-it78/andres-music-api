@@ -1,8 +1,7 @@
 import createError from 'http-errors'
-import { encodeString, verifyString } from '../../utils/auth'
+import { encodeString, verifyString, generateOTP } from '../../utils/auth'
 import OTP from './otp.model'
 import User from '../user/user.model'
-import OTP from './otp.model'
 import { forgottenPasswordType } from '../../constants/otp.constant'
 
 class OTPService {

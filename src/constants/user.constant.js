@@ -1,6 +1,7 @@
 export const userActive = 1
 export const userInactive = -1
-export const userStatusList = [userActive, userInactive]
+export const userBlock = -2
+export const userStatusList = [userActive, userInactive, userBlock]
 
 export const userMale = 1
 export const userFemale = 2

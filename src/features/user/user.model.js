@@ -1,13 +1,8 @@
 const mongoose = require('mongoose')
-import {
-  userInactive,
-  userActive,
-  userMale,
-  userFemale,
-  userRole,
-  adminRole,
-} from '../../constants/user.constant'
 import slug from 'mongoose-slug-generator'
+import {
+  userGenderList, userInactive, userMale, userRole, userRoleList, userStatusList
+} from '../../constants/user.constant'
 
 const options = {
   separator: '-',
@@ -70,7 +65,7 @@ const userSchema = new mongoose.Schema(
     gender: {
       type: Number,
       default: userMale,
-      enum: [userMale, userFemale],
+      enum: userGenderList,
     },
     address: {
       type: String,
@@ -88,12 +83,12 @@ const userSchema = new mongoose.Schema(
     role: {
       type: Number,
       default: userRole,
-      enum: [userRole, adminRole],
+      enum: userRoleList,
     },
     status: {
       type: Number,
       default: userInactive,
-      enum: [userInactive, userActive],
+      enum: userStatusList,
     },
     deletedAt: {
       type: Date,

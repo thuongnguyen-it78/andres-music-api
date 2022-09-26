@@ -1,4 +1,6 @@
 import User from './user.model'
+import OTPService from '../otp/otp.service'
+import { userActive } from '../../constants/user.constant'
 
 class UserService {
   async getAll({ page = 1, limit = 20, q = '' }) {
@@ -75,6 +77,19 @@ class UserService {
     try {
       const user = await User.findOne({ email })
       return Boolean(user)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async setActive({ email, type, otp }) {
+    try {
+      if (!(await OTPService.check({ email, type, otp }))) return false
+
+      const user = User.find({ email })
+      user.status = userActive
+      await user.save()
+      return true
     } catch (error) {
       throw error
     }
