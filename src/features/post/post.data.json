@@ -1,0 +1,61 @@
+[
+  {
+    "title": "Java Fundamentals",
+    "content": "Java Fundamentals Content"
+  },
+
+  {
+    "title": "Java Advanced",
+    "content": "Java Advanced Content"
+  },
+
+  {
+    "title": "JavaScript Fundamentals",
+    "content": "JavaScript Fundamentals Content"
+  },
+  {
+    "title": "JavaScript Advanced",
+    "content": "JavaScript Advanced Content"
+  },
+
+  {
+    "title": "HTML Fundamentals",
+    "content": "HTML Fundamentals Content"
+  },
+  {
+    "title": "HTML Advanced",
+    "content": "HTML Advanced Content"
+  },
+  {
+    "title": "CSS Fundamentals",
+    "content": "CSS Fundamentals Content"
+  },
+  {
+    "title": "CSS Advanced",
+    "content": "CSS Advanced Content"
+  },
+  {
+    "title": "NodeJS - Express Fundamentals",
+    "content": "NodeJS - Express Fundamentals Content"
+  },
+  {
+    "title": "NodeJS - Express Advanced",
+    "content": "NodeJS - Express Advanced Content"
+  },
+  {
+    "title": "React - Ant Design Fundamentals",
+    "content": "React - Ant Design Fundamentals Content"
+  },
+  {
+    "title": "React - Ant Design Advanced",
+    "content": "React - Ant Design Advanced Content"
+  },
+  {
+    "title": "NextJS - MUI Fundamentals",
+    "content": "NextJS - MUI Fundamentals Content"
+  },
+  {
+    "title": "NextJS - MUI Advanced",
+    "content": "NextJS - MUI Advanced Content"
+  }
+]

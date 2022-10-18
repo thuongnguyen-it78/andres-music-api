@@ -24,7 +24,16 @@ class PostController {
 
   async create(req, res, next) {
     try {
-      const data = await PostService.create(req.body)
+      const data = await PostService.create(req.requestUser, req.body)
+      res.status(OK).json(getSingleResponse(data))
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async createMultiple(req, res, next) {
+    try {
+      const data = await PostService.createMultiple(req.requestUser, req.body)
       res.status(OK).json(getSingleResponse(data))
     } catch (error) {
       next(error)

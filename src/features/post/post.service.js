@@ -1,4 +1,6 @@
+import mongoose from 'mongoose'
 import Post from './post.model'
+const ObjectId = mongoose.Types.ObjectId
 
 class PostService {
   async getAll({ page = 1, limit = 20, q = '' }) {
@@ -21,16 +23,52 @@ class PostService {
 
   async getById(id) {
     try {
-      const result = await Post.findById(id)
+      const result = await Post.aggregate([
+        {
+          $match: { _id: ObjectId(id) },
+        },
+        {
+          $lookup: {
+            from: 'user',
+            localField: 'creatorId',
+            foreignField: '_id',
+            as: 'creator',
+          },
+        },
+        {
+          $unwind: {
+            path: '$creator',
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+      ])
       return result
     } catch (error) {
       throw error
     }
   }
 
-  async create(data) {
+  async create(creator, data) {
     try {
-      const result = await Post.create(data)
+      const payload = {
+        creatorId: creator._id,
+        ...data,
+      }
+      const result = await Post.create(payload)
+      return result
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async createMultiple(creator, data) {
+    try {
+      const payload = data?.map((item) => ({
+        ...item,
+        creatorId: creator._id,
+        slug: item.title.toLowerCase().replace(/ /g, '-'),
+      }))
+      const result = await Post.insertMany(payload)
       return result
     } catch (error) {
       throw error
