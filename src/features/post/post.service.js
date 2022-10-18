@@ -42,7 +42,7 @@ class PostService {
           },
         },
       ])
-      return result
+      return result?.[0]
     } catch (error) {
       throw error
     }
