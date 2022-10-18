@@ -3,9 +3,9 @@ import Post from './post.model'
 const ObjectId = mongoose.Types.ObjectId
 
 class PostService {
-  async getAll({ page = 1, limit = 20, q = '' }) {
+  async getAll({ page = 1, limit = 20, q = '', getAll }) {
     page = Number.parseInt(page) - 1
-    limit = Number.parseInt(limit)
+    limit = getAll ? Number.parseInt(limit) : 100000
     const query = q ? { name: new RegExp(q, 'i') } : {}
     try {
       const [data, count] = await Promise.all([
