@@ -23,7 +23,7 @@ export const verifyString = async (password, hash) => {
 
 export const generateAccessToken = (user) => {
   return jwt.sign(user, ACCESS_TOKEN_SECRET, {
-    expiresIn: 60 * 60 * 24,
+    expiresIn: 60 * 60 * 24 * 24,
   })
 }
 
